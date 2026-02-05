@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Economics of Dying Young | Health Data Brief</title>
+    <meta name="description"
+        content="An interactive exploration of how income inequality affects premature death rates across America's counties.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <p class="hero-tag">Interactive Data Brief</p>
+            <h1 class="hero-title">The Economics of <span class="gradient-text">Dying Young</span></h1>
+            <p class="hero-subtitle">How poverty predicts premature death across 3,000+ U.S. counties</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">3,081</span>
+                    <span class="stat-label">Counties Analyzed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2.5x</span>
+                    <span class="stat-label">Higher Death Rate in Poorest Counties</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">$100K+</span>
+                    <span class="stat-label">Income Gap Between Extremes</span>
+                </div>
+            </div>
+            <a href="#narrative" class="scroll-indicator">
+                <span>Explore the Data</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+            </a>
+        </div>
+        <div class="hero-gradient"></div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Narrative Section -->
+        <section id="narrative" class="content-section">
+            <div class="container">
+                <article class="narrative">
+                    <h2>The Price of Poverty, Measured in Lives</h2>
+
+                    <p class="lead">In America, your zip code can predict your lifespan. Counties where residents earn
+                        less than $45,000 per year see premature death rates nearly <strong>2.5 times higher</strong>
+                        than the wealthiest communities. This is not just a correlation. It is a crisis hiding in plain
+                        sight.</p>
+
+                    <p>Premature death, measured as Years of Potential Life Lost (YPLL), captures deaths occurring
+                        before age 75. A child dying at 5 contributes 70 years of lost life; a 50 year old dying of a
+                        preventable heart attack adds 25 years. This metric reveals the true burden of early mortality
+                        beyond simple death counts.</p>
+
+                    <p>Using data from the County Health Rankings and Roadmaps program, I analyzed over 3,000 U.S.
+                        counties to understand how economic factors shape health outcomes. The pattern is unmistakable:
+                        as median household income rises, premature death rates plummet. Counties in the poorest
+                        income quartile (earning under $52,000 annually) have an average YPLL rate of
+                        12,847 per 100,000 residents. Compare this to wealthiest quartile counties
+                        where the rate drops to just 6,892, a staggering 46% reduction in preventable deaths.</p>
+
+                    <div class="insight-card insight-card-minimal">
+                        <div class="insight-content">
+                            <h4>Key Finding</h4>
+                            <p>For every $10,000 increase in median county income, premature death rates drop by
+                                approximately 800 deaths per 100,000 residents.</p>
+                        </div>
+                    </div>
+
+                    <h3>Children Pay the Highest Price</h3>
+
+                    <p>Perhaps most troubling is the relationship between child poverty and community health. Counties
+                        where more than 30% of children live in poverty see premature death rates nearly
+                        double those where child poverty falls below 10%. Children in these communities
+                        face compounding disadvantages: limited access to healthcare, food insecurity, environmental
+                        hazards, and chronic stress that manifests in poor health outcomes across entire lifespans.
+                    </p>
+
+                    <p>The data reveals geographic clustering of vulnerability. Appalachian counties, the Mississippi
+                        Delta, Native American reservations, and parts of the rural South consistently appear among the
+                        highest mortality communities. These are not random patterns. They reflect decades of
+                        disinvestment, job losses, and crumbling healthcare infrastructure.</p>
+
+                    <h3>What This Data Cannot Tell Us</h3>
+
+                    <p>While the correlation between income and premature death is robust, this analysis has
+                        limitations. Cross sectional county data cannot establish causation or track individual
+                        outcomes. Factors like healthcare access, education levels, and environmental quality contribute
+                        to mortality but are not fully captured here. Additionally, county level averages may mask
+                        significant disparities within communities. Wealthy enclaves and impoverished neighborhoods
+                        often
+                        exist side by side.</p>
+
+                    <h3>Implications for Policy</h3>
+
+                    <p>These findings underscore that public health is inseparable from economic policy. Efforts to
+                        reduce premature mortality must address root causes: living wages, affordable healthcare,
+                        childhood nutrition programs, and targeted investment in distressed communities. The 10 poorest
+                        counties in America, places like Perry County, Alabama and McCreary County, Kentucky, have
+                        median
+                        incomes below $35,000 and death rates exceeding 17,000 per 100,000. These are not inevitable
+                        statistics. They are policy choices with life or death consequences.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- Visualization 1: Scatter Plot -->
+        <section id="viz-scatter" class="viz-section">
+            <div class="container">
+                <div class="viz-header">
+                    <h2>Income vs. Premature Death</h2>
+                    <p>Each point represents a U.S. county. Hover to explore individual communities.</p>
+                </div>
+                <div class="viz-controls">
+                    <label for="state-filter">Filter by State:</label>
+                    <select id="state-filter">
+                        <option value="all">All States</option>
+                    </select>
+                    <label for="quartile-filter">Income Quartile:</label>
+                    <select id="quartile-filter">
+                        <option value="all">All Quartiles</option>
+                        <option value="Poorest Quartile">Poorest Quartile</option>
+                        <option value="Lower Middle">Lower Middle</option>
+                        <option value="Upper Middle">Upper Middle</option>
+                        <option value="Wealthiest Quartile">Wealthiest Quartile</option>
+                    </select>
+                </div>
+                <div class="viz-container" id="scatter-plot"></div>
+                <div class="viz-legend" id="scatter-legend"></div>
+            </div>
+        </section>
+
+        <!-- Visualization 2: Bar Chart -->
+        <section id="viz-bar" class="viz-section viz-section-alt">
+            <div class="container">
+                <div class="viz-header">
+                    <h2>Death Rates by Income Quartile</h2>
+                    <p>Average premature death rates reveal a clear economic gradient.</p>
+                </div>
+                <div class="viz-container chart-container">
+                    <canvas id="bar-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization 3: State Heatmap -->
+        <section id="viz-heatmap" class="viz-section">
+            <div class="container">
+                <div class="viz-header">
+                    <h2>State-Level Comparison</h2>
+                    <p>Compare states across multiple health and economic indicators. Click column headers to sort.</p>
+                </div>
+                <div class="viz-controls">
+                    <label for="heatmap-sort">Sort by:</label>
+                    <select id="heatmap-sort">
+                        <option value="avgDeathRate-desc">Death Rate (Highest First)</option>
+                        <option value="avgDeathRate-asc">Death Rate (Lowest First)</option>
+                        <option value="avgIncome-desc">Income (Highest First)</option>
+                        <option value="avgIncome-asc">Income (Lowest First)</option>
+                        <option value="avgChildPoverty-desc">Child Poverty (Highest First)</option>
+                        <option value="avgChildPoverty-asc">Child Poverty (Lowest First)</option>
+                        <option value="avgPoorHealth-desc">Poor Health % (Highest First)</option>
+                        <option value="avgPoorHealth-asc">Poor Health % (Lowest First)</option>
+                        <option value="countyCount-desc">County Count (Most First)</option>
+                        <option value="state-asc">Alphabetical (A-Z)</option>
+                    </select>
+                    <label for="heatmap-color">Color by:</label>
+                    <select id="heatmap-color">
+                        <option value="avgDeathRate">Death Rate</option>
+                        <option value="avgIncome">Median Income</option>
+                        <option value="avgChildPoverty">Child Poverty</option>
+                        <option value="avgPoorHealth">Poor Health %</option>
+                    </select>
+                </div>
+                <div class="viz-container" id="state-heatmap"></div>
+                <div class="heatmap-legend" id="heatmap-legend"></div>
+            </div>
+        </section>
+
+        <!-- Extreme Comparison -->
+        <section id="extremes" class="viz-section viz-section-alt">
+            <div class="container">
+                <div class="viz-header">
+                    <h2>Tale of Two Americas</h2>
+                    <p>Comparing the 10 richest and 10 poorest counties reveals the true cost of inequality.</p>
+                </div>
+                <div class="comparison-grid">
+                    <div class="comparison-card richest">
+                        <h3>🏆 Top 10 Richest Counties</h3>
+                        <div class="comparison-stat">
+                            <span class="comparison-value" id="richest-income">$147,000</span>
+                            <span class="comparison-label">Median Income</span>
+                        </div>
+                        <div class="comparison-stat">
+                            <span class="comparison-value" id="richest-death">4,500</span>
+                            <span class="comparison-label">Premature Deaths per 100K</span>
+                        </div>
+                        <ul id="richest-list"></ul>
+                    </div>
+                    <div class="comparison-card poorest">
+                        <h3>⚠️ Bottom 10 Poorest Counties</h3>
+                        <div class="comparison-stat">
+                            <span class="comparison-value" id="poorest-income">$34,500</span>
+                            <span class="comparison-label">Median Income</span>
+                        </div>
+                        <div class="comparison-stat">
+                            <span class="comparison-value" id="poorest-death">17,200</span>
+                            <span class="comparison-label">Premature Deaths per 100K</span>
+                        </div>
+                        <ul id="poorest-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with Citations -->
+    <footer class="citations">
+        <div class="container">
+            <h2>Data Sources & Citations</h2>
+            <div class="citation-list">
+                <div class="citation">
+                    <h4>Primary Data Source</h4>
+                    <p>University of Wisconsin Population Health Institute. <em>County Health Rankings & Roadmaps
+                            2024.</em> <a href="https://www.countyhealthrankings.org/" target="_blank"
+                            rel="noopener">countyhealthrankings.org</a></p>
+                </div>
+                <div class="citation">
+                    <h4>Years of Potential Life Lost (YPLL)</h4>
+                    <p>Calculated from National Center for Health Statistics mortality data. YPLL measures premature
+                        mortality by calculating years lost before age 75, weighted by population.</p>
+                </div>
+                <div class="citation">
+                    <h4>Income & Poverty Data</h4>
+                    <p>U.S. Census Bureau, Small Area Income and Poverty Estimates (SAIPE) Program, 2022 estimates.</p>
+                </div>
+            </div>
+            <div class="footer-meta">
+                <p>Created for QAMO 5090 | Interactive Data Brief Assignment</p>
+                <p>© 2026 | Data analysis and visualization</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
